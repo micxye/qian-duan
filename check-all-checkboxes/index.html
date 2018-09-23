@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Check All Checkboxes</title>
+</head>
+
+<body>
+    <input type="checkbox" id="check-all">check all<br>
+    <input type="checkbox" class="checkbox">check<br>
+    <input type="checkbox" class="checkbox">check<br>
+    <input type="checkbox" class="checkbox">check<br>
+    <input type="checkbox" class="checkbox">check<br>
+    <script>
+        function checkAllCheckboxes() {
+            if (allAreChecked()) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            } else {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            }
+        }
+
+        function allAreChecked() {
+            const checkboxes = document.querySelectorAll('.checkbox');
+            for (let checkbox of checkboxes) {
+                if (!checkbox.checked) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function checkCheckAll() {
+            if (allAreChecked()) {
+                checkAll.checked = true;
+            } else {
+                checkAll.checked = false;
+            }
+        }
+        
+        const checkboxes = document.querySelectorAll('.checkbox');
+        checkboxes.forEach(checkBox => {
+            checkBox.addEventListener('change', checkCheckAll);
+        })
+
+        const checkAll = document.getElementById('check-all');
+        checkAll.addEventListener('change', checkAllCheckboxes);
+    </script>
+</body>
+
+</html>
