@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Infinite Scroll</title>
+    <style>
+        .loading {
+            width: 250px;
+            height: 250px;
+            background-color: rgb(207, 207, 207)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Infinite Scroll</h1>
+        <div id="list"></div>
+    </div>
+    <script>
+        function generateImage() {
+            const num = Math.floor(Math.random() * 10000000);
+            return `http://api.adorable.io/avatars/250/${num}`
+        }
+        
+        function getElementImage() {
+            const imageClass = 'image',
+                  imageLoadingClass = 'loading',
+                  image = document.createElement('img');
+            
+            image.className = `${imageClass} ${imageLoadingClass}`;
+            image.src = generateImage();
+            image.onload = function() {
+                setTimeout(() => image.classList.remove(imageLoadingClass), 5000)
+            }
+            return image;
+        }
+
+        function getElement() {
+            const elementImage = getElementImage(),
+                  element = document.createElement('div');
+            element.className = 'list-item';
+            element.appendChild(elementImage);
+            return element;
+        }
+
+        function loadNextBatch(batchSize = 9) {
+            const list = document.getElementById('list');
+            while (batchSize) {
+                const element = getElement();
+                list.appendChild(element);
+                batchSize--
+            }
+        }
+
+        // initialize
+        loadNextBatch();
+
+        window.onscroll = function () {
+            console.log('page Y offset', window.pageYOffset);
+            console.log('html offset height', document.documentElement.offsetHeight);
+            console.log('window inner height', window.innerHeight);
+            // if top of the window offset from 0 is less than the entire height of the document minus the height of the window
+            // do not load
+            if (window.pageYOffset < document.documentElement.offsetHeight - window.innerHeight) return;
+            loadNextBatch();
+        }
+    </script>
+</body>
+
+</html>
